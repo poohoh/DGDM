@@ -25,13 +25,13 @@ data:
     channels: 1
     to_normal: True
   train:
-    batch_size: 8
+    batch_size: 24
     shuffle: True
   val:
-    batch_size: 2
+    batch_size: 24
     shuffle: True
   test:
-    batch_size: 2
+    batch_size: 24
     # shuffle: False
 
 model:

@@ -17,21 +17,21 @@ data:
   channels: ['ir105', 'sw038', 'wv063']
   dataset_config:
     dataset: 'typhoon'          # options {'MMNIST', 'typhoon'}
-    dataset_path: 'data/DATA' # Dataset path
-    valset_path: 'data/DATA'
+    dataset_path: 'data/typhoon/Train' # Dataset path
+    valset_path: 'data/typhoon/Test'
     in_frames: 10   
     out_frames: 10
     image_size: 128
     channels: 3
-    to_normal: True
+    to_normal: False  # normalize different way
   train:
-    batch_size: 8
+    batch_size: 9
     shuffle: True
   val:
-    batch_size: 2
+    batch_size: 9
     shuffle: True
   test:
-    batch_size: 2
+    batch_size: 9
     # shuffle: False
 
 model:

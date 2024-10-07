@@ -41,9 +41,14 @@ class TLoader(Dataset):
             ir = np.array(np.load(i))
             sw = np.array(np.load(i.replace('ir105', 'sw038')))
             wv = np.array(np.load(i.replace('ir105', 'wv063')))
-            img = np.stack([ir, sw, wv], axis=0)
+            # normalize
+            normalized_ir = ((ir - ir.min()) / (ir.max() - ir.min())).astype(np.float32)
+            normalized_sw = ((sw - sw.min()) / (sw.max() - sw.min())).astype(np.float32)
+            normalized_wv = ((wv - wv.min()) / (wv.max() - wv.min())).astype(np.float32)
+            img = np.stack([normalized_ir, normalized_sw, normalized_wv], axis=0)
             imgs.append(img)
         imgs = np.stack(imgs, axis=0)
+        # imgs = imgs.astype(np.float32)  # dtype is uint16, which is unsupported by pytorch
         imgs = torch.from_numpy(imgs)
         return imgs
 
