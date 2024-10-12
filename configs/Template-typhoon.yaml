@@ -23,7 +23,7 @@ data:
     out_frames: 10
     image_size: 128
     channels: 3
-    to_normal: False  # normalize different way
+    to_normal: True
   train:
     batch_size: 9
     shuffle: True
