@@ -188,6 +188,7 @@ class BBDMRunner(BaseRunner):
             b, f, c, h, w = x.shape
             for j in range(sample_num): # iteration 
                 sample = net.sample(x_cond, clip_denoised=False)
+                # sample = net.sample(x_cond, clip_denoised=self.config.testing.clip_denoised)
                 sample, pred = sample[0].reshape(b, f, c, h, w), sample[1].reshape(b, f, c, h, w)
                 
                 for i in range(batch_size):

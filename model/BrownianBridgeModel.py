@@ -116,7 +116,10 @@ class BrownianBridgeModel(nn.Module):
         b, f, c, h, w = x0.shape
         noise = default(noise, lambda: torch.randn_like(x0))
 
+        # x0: target(g.t.), y: reference image, x_t: image from timestep t
         x_t, objective = self.q_sample(x0, torch.tile(y[:,:,-1:], [1,1,self.out_frames,1,1]), t, noise)
+        # from torchinfo import summary
+        # summary(self.denoise_fn, input_data=[x_t, t, context])
         objective_recon = self.denoise_fn(x_t, timesteps=t, context=context)
 
         pred = rearrange(pred, 'b t c h w -> b c t h w')

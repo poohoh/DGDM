@@ -185,7 +185,7 @@ def get_dataset(data_config, test=False):
 def save_single_image(image, save_path, file_name, to_normal=True):
     image = image.detach().clone()
     if to_normal:
-        image = image.mul_(0.5).add_(0.5).clamp_(0, 1.)
+        image = image.mul_(0.5).add_(0.5).clamp_(0, 1.)  # std가 0.5, mean이 0.5라고 가정?
     image = image.mul_(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
     im = Image.fromarray(image)
     im.save(os.path.join(save_path, file_name))

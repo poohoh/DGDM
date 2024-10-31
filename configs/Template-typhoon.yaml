@@ -9,7 +9,7 @@ training:
 
 testing:
   clip_denoised: True
-  sample_num: 1                 # number of inference sample
+  sample_num: 5                 # number of inference sample
 
 data:
   dataset_name: 'typhoon'       # options {'MMNIST', 'typhoon'}
@@ -17,28 +17,28 @@ data:
   channels: ['ir105', 'sw038', 'wv063']
   dataset_config:
     dataset: 'typhoon'          # options {'MMNIST', 'typhoon'}
-    dataset_path: 'data/typhoon/Train' # Dataset path
-    valset_path: 'data/typhoon/Test'
+    dataset_path: 'data/typhoon_png/Train' # Dataset path
+    valset_path: 'data/typhoon_png/Test'
     in_frames: 10   
     out_frames: 10
     image_size: 128
     channels: 3
-    to_normal: True
+    to_normal: True  # True when normalize to [-1,1]
   train:
     batch_size: 9
     shuffle: True
   val:
-    batch_size: 9
+    batch_size: 3
     shuffle: True
   test:
-    batch_size: 9
+    batch_size: 3
     # shuffle: False
 
 model:
   model_name: "DGDM" # part of result path
   model_type: "BBDM" # specify a module
-  # model_load_path:  # model checkpoint path
-  # optim_sche_load_path:  # optimizer scheduler checkpoint path
+  # model_load_path: "results2/typhoon/DGDM/checkpoint/latest_model_200.pth" # model checkpoint path
+  # optim_sche_load_path: "results2/typhoon/DGDM/checkpoint/latest_optim_sche_200.pth" # optimizer scheduler checkpoint path
 
   EMA:
     use_ema: True
