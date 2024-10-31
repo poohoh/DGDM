@@ -75,6 +75,7 @@ class TLoader(Dataset):
 
         # if to_normal is True
         imgs = (imgs - 0.5) * 2
+        imgs.clamp_(-1., 1.)
 
         return imgs
 
@@ -85,68 +86,4 @@ class TLoader(Dataset):
         inputs = self._preprocessor(inputs, True)
         outputs = self._preprocessor(outputs, True)
         
-        return inputs, outputs    
-
-# save npy to png
-# if __name__=='__main__':
-#     import os
-#     import numpy as np
-#     from skimage import io
-#     from tqdm import tqdm
-
-#     # 현재 디렉토리 경로 설정
-#     root_dir = "data/typhoon"
-
-#     # 저장할 루트 디렉토리 설정 (예: 'processed' 폴더 안에 저장)
-#     output_root = "data/typhoon_png"
-
-
-#     # Min-Max Scaling 함수
-#     def min_max_scaling(image):
-#         min_val = np.min(image)
-#         max_val = np.max(image)
-
-#         # min과 max 값이 동일한 경우 (이미지가 균일한 값으로 채워진 경우)
-#         if max_val - min_val == 0:
-#             return np.zeros_like(image)  # 모든 값을 0으로 설정
-#         scaled_image = (image - min_val) / (max_val - min_val)
-#         return scaled_image
-
-
-#     # npy 파일을 png로 변환하여 저장하는 함수
-#     def process_and_save_npy_to_png(npy_file, output_path):
-#         # npy 파일 읽기
-#         image = np.load(npy_file)
-
-#         # Min-Max Scaling 수행
-#         scaled_image = min_max_scaling(image)
-
-#         # png 형식으로 저장 (0~255 범위로 변환)
-#         png_image = (scaled_image * 255).astype(np.uint8)
-
-#         # 출력 디렉토리 생성
-#         os.makedirs(os.path.dirname(output_path), exist_ok=True)
-
-#         # png 파일 저장
-#         io.imsave(output_path, png_image)
-
-
-#     # 모든 npy 파일 찾기 및 처리
-#     file_count = sum(len(files) for _, _, files in os.walk(root_dir))  # Get the number of files
-#     with tqdm(total=file_count) as pbar:  # Do tqdm this way
-#         for dirpath, _, filenames in os.walk(root_dir):
-#             for filename in tqdm(filenames):
-#                 if filename.endswith(".npy"):
-#                     # npy 파일 경로
-#                     npy_file = os.path.join(dirpath, filename)
-
-#                     # 출력 경로 (루트 디렉토리만 변경)
-#                     relative_path = os.path.relpath(npy_file, root_dir)
-#                     output_path = os.path.join(output_root, os.path.splitext(relative_path)[0] + ".png")
-
-#                     # npy 파일 처리 및 png 저장
-#                     process_and_save_npy_to_png(npy_file, output_path)
-#                     # print(output_path)
-#                     pbar.update(1)
-
-#     print("모든 npy 파일을 png로 변환 완료했습니다.")
+        return inputs, outputs
