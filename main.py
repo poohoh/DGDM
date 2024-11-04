@@ -29,6 +29,9 @@ def parse_args_and_config():
     parser.add_argument('--max_epoch', type=int, default=None, help='optimizer checkpoint')
     parser.add_argument('--max_steps', type=int, default=None, help='optimizer checkpoint')
 
+    # parser.add_argument('--eta', type=float, default=None, help='eta')
+    # parser.add_argument('--no_skip_sample', action='store_true', default=False, help='do not skip sample')
+
     args = parser.parse_args()
 
     with open(args.config, 'r') as f:
@@ -45,6 +48,14 @@ def parse_args_and_config():
         namespace_config.training.n_epochs = args.max_epoch
     if args.max_steps is not None:
         namespace_config.training.n_steps = args.max_steps
+    
+    # # set eta
+    # if args.eta is not None:
+    #     namespace_config.model.BB.params.eta = args.eta
+
+    # # set denoising step
+    # if args.no_skip_sample:
+    #     namespace_config.model.BB.params.skip_sample = False
 
     dict_config = namespace2dict(namespace_config)
     return namespace_config, dict_config

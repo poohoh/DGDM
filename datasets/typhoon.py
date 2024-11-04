@@ -24,12 +24,15 @@ class TLoader(Dataset):
 
     def _make_sqe(self, path):
         if self.is_train:
-            images = glob.glob(f"{path}/*/*")
+            images = glob.glob(f"{path}/*/*.png")
             images = [i for i in images if 'ir105' in i]
             images = sorted(images)
             s_index = np.random.randint(len(images)-20)
         else:
-            images = glob.glob(f"{path}/*/*")
+            images = glob.glob(f"{path}/*/*.png")
+
+            # # same validation images with paper
+            # images = glob.glob(f"/media/sda1/junha/DGDM/data/typhoon_png/Train/NANMADOL/20220918/*")
             images = [i for i in images if 'ir105' in i]
             images = sorted(images)
             s_index = 0 
@@ -56,11 +59,6 @@ class TLoader(Dataset):
             # normalized_sw = (2 * ((sw - sw.min()) / (sw.max() - sw.min())) - 1).astype(np.float32)
             # normalized_wv = (2 * ((wv - wv.min()) / (wv.max() - wv.min())) - 1).astype(np.float32)
 
-            # # npy 데이터 각 채널별 전체 평균과 std
-            # ir = ((ir - 4563.149093901573) / 1296.8070864002311)
-            # sw = ((sw - 15897.115747998383) / 258.12336306653293)
-            # wv = ((wv - 3808.8067947994314) / 78.65618777896614)
-
             # standardize
             # ir = ((ir - ir.mean(axis=0)) / ir.std(axis=0))
             # sw = ((sw - sw.mean(axis=0)) / sw.std(axis=0))
@@ -73,10 +71,6 @@ class TLoader(Dataset):
         imgs = torch.from_numpy(imgs)
         imgs = imgs / 255.
 
-        # if to_normal is True
-        imgs = (imgs - 0.5) * 2
-        imgs.clamp_(-1., 1.)
-
         return imgs
 
     def __getitem__(self, idx):
@@ -85,5 +79,11 @@ class TLoader(Dataset):
         
         inputs = self._preprocessor(inputs, True)
         outputs = self._preprocessor(outputs, True)
+
+        inputs = torch.clamp(inputs, 0, 1)
+        outputs = torch.clamp(outputs, 0, 1)
+
+        inputs = inputs * 2 - 1
+        outputs = outputs * 2 - 1
         
         return inputs, outputs
